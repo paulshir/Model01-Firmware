@@ -1,5 +1,5 @@
 # paulshir's Keyboardio Model01 firmware
-[![Build Status](https://travis-ci.org/paulshir/Model01-Firmware.svg?branch=paulshir)](https://travis-ci.org/paulshir/Model01-firmware)
+[![Build Status](https://travis-ci.com/paulshir/Model01-Firmware.svg?branch=paulshir)](https://travis-ci.com/paulshir/Model01-Firmware)
 
 This is my current firmware build for Keyboardio Model01 firmware. It has come from a lot of messing around but will likely change. It also contains a few WIP plugins.
 

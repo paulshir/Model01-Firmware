@@ -6,6 +6,8 @@
  */
 #include "Hyper.h"
 
+#define Key_HyperSend LCTRL(LSHIFT(LALT(Key_RightGui)))
+
 namespace kaleidoscope {
 
 EventHandlerResult Hyper::onKeyswitchEvent(Key &mappedKey, byte row, byte col, uint8_t keyState) {
@@ -13,7 +15,7 @@ EventHandlerResult Hyper::onKeyswitchEvent(Key &mappedKey, byte row, byte col, u
     return EventHandlerResult::OK;
   }
 
-  handleKeyswitchEvent(LCTRL(LSHIFT(LALT(Key_RightGui))), row, col, IS_PRESSED | INJECTED);
+  handleKeyswitchEvent(Key_HyperSend, row, col, keyState | INJECTED);
 
   return EventHandlerResult::EVENT_CONSUMED;
 }

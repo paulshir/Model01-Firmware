@@ -24,7 +24,6 @@
 #include <Kaleidoscope-OneShot.h>
 #include <Kaleidoscope-Qukeys.h>
 #include <Kaleidoscope-Ranges.h>
-#include <Kaleidoscope-TapDance.h>
 
 #include <Kaleidoscope-LEDControl.h>
 #include <Kaleidoscope-LED-ActiveModColor.h>

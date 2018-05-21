@@ -11,18 +11,18 @@ static uint8_t previous_led_mode = 0;
 // *INDENT-OFF*
 KEYMAPS(
   [QWERTY] = KEYMAP_STACKED(
-    Key_Backtick,   Key_1, Key_2, Key_3, Key_4, Key_5, TD(TD_LEFT_BRACKET),
-    Key_Tab,        Key_Q, Key_W, Key_E, Key_R, Key_T, Key_Tab,
-    Key_Escape,     Key_A, Key_S, Key_D, Key_F, Key_G,
-    OSL(MEDIA),     Key_Z, Key_X, Key_C, Key_V, Key_B, Key_Escape,
-    OSM(LeftShift), Key_Backspace, OSM(LeftGui), OSM(LeftControl),
+    Key_Backtick,  Key_1, Key_2, Key_3, Key_4, Key_5, Key_LeftBracket,
+    Key_Tab,       Key_Q, Key_W, Key_E, Key_R, Key_T, Key_Tab,
+    Key_Escape,    Key_A, Key_S, Key_D, Key_F, Key_G,
+    OSL(MEDIA),    Key_Z, Key_X, Key_C, Key_V, Key_B, Key_Escape,
+    Key_LeftShift, Key_Backspace, Key_LeftGui, Key_LeftControl,
     ShiftToLayer(FUNCTION),
 
-    TD(TD_RIGHT_BRACKET),  Key_6, Key_7, Key_8,     Key_9,         Key_0,         LockLayer(NUMPAD),
-    Key_Enter,             Key_Y, Key_U, Key_I,     Key_O,         Key_P,         Key_Equals,
-                           Key_H, Key_J, Key_K,     Key_L,         Key_Semicolon, Key_Quote,
-    OSM(Hyper),            Key_N, Key_M, Key_Comma, Key_Period,    Key_Slash,     Key_Minus,
-    OSM(Hyper),     OSM(LeftAlt), Key_Spacebar, OSM(RightShift),
+    Key_RightBracket, Key_6, Key_7, Key_8,     Key_9,      Key_0,         LockLayer(NUMPAD),
+    Key_Enter,        Key_Y, Key_U, Key_I,     Key_O,      Key_P,         Key_Equals,
+                      Key_H, Key_J, Key_K,     Key_L,      Key_Semicolon, Key_Quote,
+    OSM(Hyper),       Key_N, Key_M, Key_Comma, Key_Period, Key_Slash,     Key_Minus,
+    Key_Hyper, Key_LeftAlt, Key_Spacebar, Key_RightShift,
     ShiftToLayer(FUNCTION)),
 
 
@@ -47,14 +47,14 @@ KEYMAPS(
     ___, Key_mouseScrollL, Key_mouseWarpNW, Key_mouseUp,      Key_mouseWarpNE, Key_mouseScrollUp, Key_mouseBtnL,
     ___, Key_mouseScrollR, Key_mouseL,      Key_mouseDn,      Key_mouseR,      Key_mouseScrollDn,
     ___, XXX,              Key_mouseWarpSW, Key_mouseWarpEnd, Key_mouseWarpSE, Key_mouseBtnM,     Key_mouseBtnR,
-    ___, Key_mouseBtnL, ___, ___,
+    OSM(LeftShift), Key_mouseBtnL, OSM(LeftGui), OSM(LeftControl),
     ___,
 
     M(MACRO_ANY), Key_F6,        Key_F7,                   Key_F8,                  Key_F9,          Key_F10,          Key_F11,
     ___,          ___,           Key_LeftCurlyBracket,     Key_RightCurlyBracket,   Key_LeftBracket, Key_RightBracket, Key_F12,
                   Key_LeftArrow, Key_DownArrow,            Key_UpArrow,             Key_RightArrow,  ___,              ___,
     ___,          Consumer_Mute, Consumer_VolumeDecrement, Consumer_VolumeIncrement, ___,             Key_Backslash,    Key_Pipe,
-    ___, Key_RightAlt, Key_Enter, ___,
+    OSM(Hyper), OSM(LeftAlt), Key_Enter, OSM(RightShift),
     ___),
 
 
@@ -63,14 +63,14 @@ KEYMAPS(
     ___, Consumer_ScanPreviousTrack, Consumer_PlaySlashPause,  Consumer_ScanNextTrack,   Key_Home,     Key_PageUp,   Key_Enter,
     ___, Consumer_Mute,              Consumer_VolumeDecrement, Consumer_VolumeIncrement, Key_End,      Key_PageDown,
     ___, MacOS_Sleep,                ___,                      ___,                      ___,          ___,          Key_Spacebar,
-    M(MACRO_TOGGLE_MIRROR), Key_Delete, ___, ___,
+    M(MACRO_TOGGLE_MIRROR), Key_Delete, Key_RightGui, ___,
     ___,
 
-    ___, ___,           ___,           ___,         ___,            ___, ___,
-    ___, ___,           ___,           ___,         ___,            ___, ___,
-         Key_LeftArrow, Key_DownArrow, Key_UpArrow, Key_RightArrow, ___, ___,
-    ___, ___,           ___,           ___,         ___,            ___, ___,
-    ___, ___, Key_Enter, M(MACRO_TOGGLE_MIRROR),
+    ___, ___, ___,           ___,           ___,            ___, ___,
+    ___, ___, ___,           Key_UpArrow,   ___,            ___, ___,
+         ___, Key_LeftArrow, Key_DownArrow, Key_RightArrow, ___, ___,
+    ___, ___, ___,           ___,           ___,            ___, ___,
+    ___, Key_RightAlt, Key_Enter, M(MACRO_TOGGLE_MIRROR),
     ___),
 
 
@@ -234,20 +234,6 @@ void hostPowerManagementEventHandler(kaleidoscope::HostPowerManagement::Event ev
   toggleLedsOnSuspendResume(event);
 }
 
-void tapDanceAction(uint8_t tap_dance_index, byte row, byte col, uint8_t tap_count, kaleidoscope::TapDance::ActionType tap_dance_action) {
-  switch (tap_dance_index) {
-  case TD_LEFT_BRACKET:
-    tapDanceActionKeys(tap_count, tap_dance_action, Key_LeftBracket, Key_LeftCurlyBracket, LSHIFT(Key_9));
-    break;
-  case TD_RIGHT_BRACKET:
-    tapDanceActionKeys(tap_count, tap_dance_action, Key_RightBracket, Key_RightCurlyBracket, LSHIFT(Key_0));
-    break;
-  case TD_SLASH:
-    tapDanceActionKeys(tap_count, tap_dance_action, Key_Slash, Key_Backslash);
-    break;
-  }
-}
-
 KALEIDOSCOPE_INIT_PLUGINS(
   // Order Dependent Plugins
   Qukeys,
@@ -272,8 +258,7 @@ KALEIDOSCOPE_INIT_PLUGINS(
   Hyper,
   Macros,
   MagicCombo,
-  MouseKeys,
-  TapDance
+  MouseKeys
 );
 
 namespace paulshir {

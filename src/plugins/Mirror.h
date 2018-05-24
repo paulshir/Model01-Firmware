@@ -17,7 +17,9 @@ class Mirror : public kaleidoscope::Plugin {
   EventHandlerResult onKeyswitchEvent(Key &mappedKey, byte row, byte col, uint8_t keyState);
 
  private:
-  static bool active_;
+  static uint8_t step_;
+  static uint32_t left_hand_;
+  static uint32_t right_hand_;
 };
 
 }  // namespace kaleidoscope

@@ -8,9 +8,6 @@
 
 #define COLS_SPLIT COLS/2
 
-/**
- * Using keys on base layer works well. Keys on other layers always work as expected.
- */
 namespace kaleidoscope {
 
 enum {
@@ -76,7 +73,6 @@ EventHandlerResult Mirror::onKeyswitchEvent(Key &mappedKey, byte row, byte col, 
 
   byte mir_col = mirroredCol(col);
   Key newKey = Layer.lookup(row, mir_col);
-  newKey.flags = mappedKey.flags;
   handleKeyswitchEvent(newKey, row, mir_col, keyState | INJECTED);
 
   return EventHandlerResult::EVENT_CONSUMED;

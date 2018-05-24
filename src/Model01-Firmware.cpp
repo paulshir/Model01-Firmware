@@ -234,10 +234,15 @@ void hostPowerManagementEventHandler(kaleidoscope::HostPowerManagement::Event ev
   toggleLedsOnSuspendResume(event);
 }
 
+// static kaleidoscope::HelpMeDebug hmd1(1);
+// static kaleidoscope::HelpMeDebug hmd2(2);
+
 KALEIDOSCOPE_INIT_PLUGINS(
   // Order Dependent Plugins
   Qukeys,
+  // hmd1,
   Mirror,
+  // hmd2,
   OneShot,
 
   // LED Plugins

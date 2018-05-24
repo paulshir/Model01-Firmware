@@ -11,6 +11,7 @@
 
 #include "key-defs-local.h"
 
+#include "plugins/HelpMeDebug.h"
 #include "plugins/Hyper.h"
 #include "plugins/Mirror.h"
 

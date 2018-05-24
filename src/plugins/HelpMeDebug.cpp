@@ -1,5 +1,5 @@
 /* -*- mode: c++ -*-
- * HelpMeDebug.cpp -- Send the mirrored key from the other half of the board.
+ * HelpMeDebug.cpp -- Some debugging helpers.
  * Copyright (C) 2018  Paul Shirley
  *
  * See "LICENSE" for license details

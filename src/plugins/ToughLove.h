@@ -1,5 +1,5 @@
 /* -*- mode: c++ -*-
- * HelpMeDebug.h -- Some debugging helpers.
+ * ToughLove.h -- Get rid of bad habits the hard way.
  * Copyright (C) 2018  Paul Shirley
  *
  * See "LICENSE" for license details
@@ -9,14 +9,17 @@
 #include <Kaleidoscope.h>
 
 namespace kaleidoscope {
-class HelpMeDebug : public kaleidoscope::Plugin {
+class ToughLove : public kaleidoscope::Plugin {
  public:
-  HelpMeDebug(uint8_t value);
+  ToughLove(void) {}
 
   EventHandlerResult onKeyswitchEvent(Key &mappedKey, byte row, byte col, uint8_t keyState);
 
  private:
-  uint8_t value_;
+  static bool block_;
+  static bool block_left_;
 };
 
 }  // namespace kaleidoscope
+
+extern kaleidoscope::ToughLove ToughLove;

@@ -67,10 +67,10 @@ KEYMAPS(
     M(MACRO_TOGGLE_MIRROR), Key_Delete, Key_RightGui, ___,
     ___,
 
-    ___, M(MACRO_TOGGLE_TOUGH_LOVE), ___,           ___,           ___,            ___, ___,
-    ___, ___,                        ___,           Key_UpArrow,   ___,            ___, ___,
-         ___,                        Key_LeftArrow, Key_DownArrow, Key_RightArrow, ___, ___,
-    ___, ___,                        ___,           ___,           ___,            ___, ___,
+    ___, M(MACRO_TOGGLE_TL_SHIFT), M(MACRO_TOGGLE_TL_FUNCTION), ___,           ___,            ___, ___,
+    ___, ___,                      ___,                         Key_UpArrow,   ___,            ___, ___,
+         ___,                      Key_LeftArrow,               Key_DownArrow, Key_RightArrow, ___, ___,
+    ___, ___,                      ___,                         ___,           ___,            ___, ___,
     ___, Key_RightAlt, Key_Enter, M(MACRO_TOGGLE_MIRROR),
     ___),
 
@@ -171,8 +171,14 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
     if (keyToggledOn(keyState))
       toggleMirror();
     break;
-  case MACRO_TOGGLE_TOUGH_LOVE:
-    ToughLove.active = !ToughLove.active;
+  case MACRO_TOGGLE_TL_SHIFT:
+    if (keyToggledOn(keyState))
+      ToughLove.shift_block_active = !ToughLove.shift_block_active;
+    break;
+  case MACRO_TOGGLE_TL_FUNCTION:
+    if (keyToggledOn(keyState))
+      ToughLove.function_block_active = !ToughLove.function_block_active;
+    break;
   }
 
   return MACRO_NONE;
@@ -246,6 +252,7 @@ void hostPowerManagementEventHandler(kaleidoscope::HostPowerManagement::Event ev
 KALEIDOSCOPE_INIT_PLUGINS(
   // Order Dependent Plugins
   Qukeys,
+  ToughLove,
   // hmd1,
   Mirror,
   // hmd2,
@@ -269,8 +276,7 @@ KALEIDOSCOPE_INIT_PLUGINS(
   Hyper,
   Macros,
   MagicCombo,
-  MouseKeys,
-  ToughLove
+  MouseKeys
 );
 
 namespace paulshir {

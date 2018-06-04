@@ -14,6 +14,8 @@ class ToughLove : public kaleidoscope::Plugin {
  public:
   ToughLove(void) {}
   static bool active;
+  static bool shift_block_active;
+  static bool function_block_active;
 
   EventHandlerResult onKeyswitchEvent(Key &mappedKey, byte row, byte col, uint8_t keyState);
 

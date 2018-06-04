@@ -15,6 +15,8 @@
 namespace kaleidoscope {
 
 bool ToughLove::active = true;
+bool ToughLove::shift_block_active = true;
+bool ToughLove::function_block_active = false;
 bool ToughLove::block_left_ = false;
 bool ToughLove::block_right_ = false;
 
@@ -27,7 +29,7 @@ EventHandlerResult ToughLove::onKeyswitchEvent(Key &mappedKey, byte row, byte co
     return EventHandlerResult::OK;
   }
 
-  if ((row == 0 && col == 7) || (row == 3 && col == 6)) {
+  if ((row == 0 && col == 7 && shift_block_active) || (row == 3 && col == 6 && function_block_active)) {
     if (keyIsPressed(keyState)) {
       block_left_ = true;
     } else if (keyWasPressed(keyState)) {
@@ -37,7 +39,7 @@ EventHandlerResult ToughLove::onKeyswitchEvent(Key &mappedKey, byte row, byte co
     return EventHandlerResult::OK;
   }
 
-  if ((row == 0 && col == 8) || (row == 3 && col == 9)) {
+  if ((row == 0 && col == 8 && shift_block_active) || (row == 3 && col == 9 && function_block_active)) {
     if (keyIsPressed(keyState)) {
       block_right_ = true;
     } else if (keyWasPressed(keyState)) {

@@ -289,8 +289,6 @@ void setup() {
   StalkerEffect.variant = STALKER(Haunt, (CRGB(255, 100, 225)));
   StalkerEffect.breath_hue = 205;
 
-  // We want the keyboard to be able to wake the host up from suspend.
-  HostPowerManagement.enableWakeup();
   MagicCombo.magic_combos = magic_combos;
   MouseKeys.speed = 2;
   MouseKeys.accelSpeed = 5;

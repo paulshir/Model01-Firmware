@@ -14,6 +14,7 @@
 #include "plugins/HelpMeDebug.h"
 #include "plugins/Hyper.h"
 #include "plugins/Mirror.h"
+#include "plugins/ToughLove.h"
 
 #include <Kaleidoscope.h>
 #include <Kaleidoscope-Escape-OneShot.h>
@@ -40,7 +41,8 @@ enum {
   MACRO_VERSION_INFO,
   MACRO_ANY,
   MACRO_CLEAR_ONESHOT,
-  MACRO_TOGGLE_MIRROR
+  MACRO_TOGGLE_MIRROR,
+  MACRO_TOGGLE_TOUGH_LOVE
 };
 
 // Layers

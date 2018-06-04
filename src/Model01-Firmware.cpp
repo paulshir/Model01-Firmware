@@ -7,6 +7,7 @@
 #include "Model01-Firmware.h"
 
 static uint8_t previous_led_mode = 0;
+static bool previous_tough_love_status = true;
 
 // *INDENT-OFF*
 KEYMAPS(
@@ -66,10 +67,10 @@ KEYMAPS(
     M(MACRO_TOGGLE_MIRROR), Key_Delete, Key_RightGui, ___,
     ___,
 
-    ___, ___, ___,           ___,           ___,            ___, ___,
-    ___, ___, ___,           Key_UpArrow,   ___,            ___, ___,
-         ___, Key_LeftArrow, Key_DownArrow, Key_RightArrow, ___, ___,
-    ___, ___, ___,           ___,           ___,            ___, ___,
+    ___, M(MACRO_TOGGLE_TOUGH_LOVE), ___,           ___,           ___,            ___, ___,
+    ___, ___,                        ___,           Key_UpArrow,   ___,            ___, ___,
+         ___,                        Key_LeftArrow, Key_DownArrow, Key_RightArrow, ___, ___,
+    ___, ___,                        ___,           ___,           ___,            ___, ___,
     ___, Key_RightAlt, Key_Enter, M(MACRO_TOGGLE_MIRROR),
     ___),
 
@@ -147,11 +148,14 @@ static void toggleMirror() {
     Layer.off(MIRROR);
     StalkerEffect.breathe_on = false;
     kaleidoscope::LEDControl::set_mode(previous_led_mode);
+    ToughLove.active = previous_tough_love_status;
   } else {
     Layer.on(MIRROR);
     previous_led_mode = kaleidoscope::LEDControl::get_mode_index();
     StalkerEffect.breathe_on = true;
     StalkerEffect.activate();
+    previous_tough_love_status = ToughLove.active;
+    ToughLove.active = false;
   }
 }
 
@@ -167,6 +171,8 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
     if (keyToggledOn(keyState))
       toggleMirror();
     break;
+  case MACRO_TOGGLE_TOUGH_LOVE:
+    ToughLove.active = !ToughLove.active;
   }
 
   return MACRO_NONE;
@@ -263,7 +269,8 @@ KALEIDOSCOPE_INIT_PLUGINS(
   Hyper,
   Macros,
   MagicCombo,
-  MouseKeys
+  MouseKeys,
+  ToughLove
 );
 
 namespace paulshir {

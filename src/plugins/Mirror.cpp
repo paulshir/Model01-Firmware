@@ -6,8 +6,6 @@
  */
 #include "Mirror.h"
 
-#define COLS_SPLIT COLS/2
-
 namespace kaleidoscope {
 
 enum {

@@ -52,7 +52,7 @@ EventHandlerResult ToughLove::onKeyswitchEvent(Key &mappedKey, byte row, byte co
 
   if ((block_left_ && col < COLS_SPLIT) || (block_right_ && col >= COLS_SPLIT)) {
     if (keyToggledOn(keyState)) {
-      hands_.setState(row, col);
+      hands_.setState(row, col);      
     } else if (keyToggledOff(keyState)) {
       hands_.unsetState(row, col);
     }

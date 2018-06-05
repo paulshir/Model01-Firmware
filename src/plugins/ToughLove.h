@@ -7,6 +7,7 @@
 #pragma once
 
 #include "../key-defs-local.h"
+#include "HandStateStore.h"
 #include <Kaleidoscope.h>
 
 namespace kaleidoscope {
@@ -22,6 +23,7 @@ class ToughLove : public kaleidoscope::Plugin {
  private:
   static bool block_left_;
   static bool block_right_;
+  static paulshir::HandStateStore hands_;
 };
 
 }  // namespace kaleidoscope

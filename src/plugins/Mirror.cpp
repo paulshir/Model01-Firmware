@@ -15,8 +15,7 @@ enum {
 };
 
 uint8_t Mirror::step_ = MIRROR_OFF;
-uint32_t Mirror::left_hand_ = 0;
-uint32_t Mirror::right_hand_ = 0;
+paulshir::HandStateStore Mirror::hands_;
 
 static byte mirroredCol(byte col) {
   return COLS - col - 1;
@@ -28,7 +27,7 @@ EventHandlerResult Mirror::onKeyswitchEvent(Key &mappedKey, byte row, byte col, 
     if (keyIsPressed(keyState)) {
       step_ = MIRROR_ACTIVE;
     } else if (keyToggledOff(keyState)) {
-      if (left_hand_ | right_hand_) {
+      if (!hands_.isClear()) {
         step_ = MIRROR_CLEANUP;
       } else {
         step_ = MIRROR_OFF;
@@ -43,29 +42,19 @@ EventHandlerResult Mirror::onKeyswitchEvent(Key &mappedKey, byte row, byte col, 
     return EventHandlerResult::OK;
   }
 
-  uint32_t scanbit;
-  uint32_t* hand;
-  if (col < COLS_SPLIT) {
-    scanbit = SCANBIT(row, col);
-    hand = &left_hand_;
-  } else {
-    scanbit = SCANBIT(row, col - COLS_SPLIT);
-    hand = &right_hand_;
-  }
-
   // Update the keymap state
   if (step_ == MIRROR_ACTIVE && keyToggledOn(keyState)) {
-    *hand |= scanbit;
+    hands_.setState(row, col);
   } else if (keyToggledOff(keyState)) {
-    *hand &= ~scanbit;
+    hands_.unsetState(row, col);
   }
 
-  if (step_ == MIRROR_CLEANUP && left_hand_ == 0 && right_hand_ == 0) {
+  if (step_ == MIRROR_CLEANUP && hands_.isClear()) {
     step_ = MIRROR_OFF;
   }
 
   // If the col is not registered don't mirror it.
-  if (keyIsPressed(keyState) && !(*hand & scanbit)) {
+  if (keyIsPressed(keyState) && !(hands_.getState(row, col))) {
     return EventHandlerResult::OK;
   }
 

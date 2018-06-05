@@ -7,6 +7,7 @@
 #pragma once
 
 #include "../key-defs-local.h"
+#include "HandStateStore.h"
 #include <Kaleidoscope.h>
 
 namespace kaleidoscope {
@@ -18,8 +19,7 @@ class Mirror : public kaleidoscope::Plugin {
 
  private:
   static uint8_t step_;
-  static uint32_t left_hand_;
-  static uint32_t right_hand_;
+  static paulshir::HandStateStore hands_;
 };
 
 }  // namespace kaleidoscope

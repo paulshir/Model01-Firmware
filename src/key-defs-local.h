@@ -6,7 +6,6 @@
  */
 #pragma once
 
-#define COLS_SPLIT COLS/2
 
 #include <Kaleidoscope.h>
 #include <Kaleidoscope-Ranges.h>

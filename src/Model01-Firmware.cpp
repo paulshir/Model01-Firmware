@@ -20,7 +20,7 @@ KEYMAPS(
     ShiftToLayer(FUNCTION),
 
     Key_RightBracket, Key_6, Key_7, Key_8,     Key_9,      Key_0,         LockLayer(NUMPAD),
-    Key_Enter,        Key_Y, Key_U, Key_I,     Key_O,      Key_P,         Key_Equals,
+    Key_NoKey,        Key_Y, Key_U, Key_I,     Key_O,      Key_P,         Key_Equals,
                       Key_H, Key_J, Key_K,     Key_L,      Key_Semicolon, Key_Quote,
     OSM(Hyper),       Key_N, Key_M, Key_Comma, Key_Period, Key_Slash,     Key_Minus,
     Key_Hyper, Key_LeftAlt, Key_Spacebar, Key_RightShift,
@@ -52,7 +52,7 @@ KEYMAPS(
     ___,
 
     M(MACRO_ANY), Key_F6,        Key_F7,                   Key_F8,                  Key_F9,          Key_F10,          Key_F11,
-    ___,          ___,           Key_LeftCurlyBracket,     Key_RightCurlyBracket,   Key_LeftBracket, Key_RightBracket, Key_F12,
+    Key_Enter,    ___,           Key_LeftCurlyBracket,     Key_RightCurlyBracket,   Key_LeftBracket, Key_RightBracket, Key_F12,
                   Key_LeftArrow, Key_DownArrow,            Key_UpArrow,             Key_RightArrow,  ___,              ___,
     ___,          Consumer_Mute, Consumer_VolumeDecrement, Consumer_VolumeIncrement, ___,             Key_Backslash,    Key_Pipe,
     OSM(Hyper), OSM(LeftAlt), Key_Enter, OSM(RightShift),
@@ -83,10 +83,10 @@ KEYMAPS(
     ___, ___, ___, LockLayer(FUNCTION),
     Key_Mirror,
 
-    ___, ___, ___, ___, ___, ___, ___,
-    ___, ___, ___, ___, ___, ___, ___,
-         ___, ___, ___, ___, ___, ___,
-    ___, ___, ___, ___, ___, ___, ___,
+    ___,       ___, ___, ___, ___, ___, ___,
+    Key_Enter, ___, ___, ___, ___, ___, ___,
+               ___, ___, ___, ___, ___, ___,
+    ___,       ___, ___, ___, ___, ___, ___,
     LockLayer(FUNCTION), ___, ___, ___,
     Key_Mirror),
 
@@ -189,10 +189,10 @@ static const kaleidoscope::MagicCombo::combo_t magic_combos[] PROGMEM = {
     R3C6,
     R3C9
   },
-  {
-    R0C7,
-    R0C8
-  },
+  // {
+  //   R0C7,
+  //   R0C8
+  // },
   {0, 0}
 };
 

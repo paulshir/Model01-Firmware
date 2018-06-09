@@ -31,9 +31,9 @@ EventHandlerResult ToughLove::onKeyswitchEvent(Key &mappedKey, byte row, byte co
   }
 
   if ((row == 0 && col == 7 && shift_block_active) || (row == 3 && col == 6 && function_block_active)) {
-    if (keyIsPressed(keyState)) {
+    if (keyToggledOn(keyState)) {
       block_left_ = true;
-    } else if (keyWasPressed(keyState)) {
+    } else if (keyToggledOff(keyState)) {
       block_left_ = false;
     }
 
@@ -41,31 +41,43 @@ EventHandlerResult ToughLove::onKeyswitchEvent(Key &mappedKey, byte row, byte co
   }
 
   if ((row == 0 && col == 8 && shift_block_active) || (row == 3 && col == 9 && function_block_active)) {
-    if (keyIsPressed(keyState)) {
+    if (keyToggledOn(keyState)) {
       block_right_ = true;
-    } else if (keyWasPressed(keyState)) {
+    } else if (keyToggledOff(keyState)) {
       block_right_ = false;
     }
 
     return EventHandlerResult::OK;
   }
 
-  if ((block_left_ && col < COLS_SPLIT) || (block_right_ && col >= COLS_SPLIT)) {
+  if (row == 3 && (col == 6 || col == 9)) {
+    return EventHandlerResult::OK;
+  }
+
+  if ((block_left_ && col < COLS_SPLIT - 1) || (block_right_ && col >= COLS_SPLIT + 1)) {
     if (keyToggledOn(keyState)) {
       hands_.setState(row, col);
     } else if (keyToggledOff(keyState)) {
-      hands_.unsetState(row, col);
+      if (hands_.getState(row, col)) {
+        hands_.unsetState(row, col);
+      } else {
+        return EventHandlerResult::OK;
+      }
     }
-
-    block_left_ = false;
-    block_right_ = false;
 
     return EventHandlerResult::EVENT_CONSUMED;
   }
 
   if (hands_.getState(row, col)) {
+    if (keyToggledOff(keyState)) {
+      hands_.unsetState(row, col);
+    }
+
     return EventHandlerResult::EVENT_CONSUMED;
   }
+
+  block_left_ = false;
+  block_right_ = false;
 
   return EventHandlerResult::OK;
 }

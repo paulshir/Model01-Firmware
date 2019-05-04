@@ -3,6 +3,7 @@
 #include <Kaleidoscope.h>
 
 #define COLS_SPLIT COLS/2
+#define SCANBIT(row,col) ((uint32_t)1 << ((row) * 8 + (7 - (col))))
 
 namespace paulshir {
 class HandStateStore {

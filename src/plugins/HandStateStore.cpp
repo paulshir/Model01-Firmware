@@ -5,7 +5,7 @@ namespace paulshir {
 HandStateStore::HandStateStore() {
   this->HandStateStore::left_hand_ = 0;
   this->HandStateStore::right_hand_ = 0;
-};
+}
 
 void HandStateStore::setState(byte row, byte col) {
   if (col < COLS_SPLIT) {

@@ -20,10 +20,10 @@ KEYMAPS(
     ShiftToLayer(FUNCTION),
 
     Key_RightBracket, Key_6, Key_7, Key_8,     Key_9,      Key_0,         LockLayer(NUMPAD),
-    Key_NoKey,        Key_Y, Key_U, Key_I,     Key_O,      Key_P,         Key_Equals,
+    XXX,              Key_Y, Key_U, Key_I,     Key_O,      Key_P,         Key_Equals,
                       Key_H, Key_J, Key_K,     Key_L,      Key_Semicolon, Key_Quote,
-    OSM(Hyper),       Key_N, Key_M, Key_Comma, Key_Period, Key_Slash,     Key_Minus,
-    Key_Hyper, Key_LeftAlt, Key_Spacebar, Key_RightShift,
+    XXX,              Key_N, Key_M, Key_Comma, Key_Period, Key_Slash,     Key_Minus,
+    Key_HyperP, Key_LeftAlt, Key_Spacebar, Key_RightShift,
     ShiftToLayer(FUNCTION)),
 
 
@@ -35,10 +35,10 @@ KEYMAPS(
     ___, ___, ___, ___,
     ___,
 
-    M(MACRO_VERSION_INFO),  ___, Key_Keypad7, Key_Keypad8,   Key_Keypad9,        Key_KeypadSubtract, ___,
-    ___,                    ___, Key_Keypad4, Key_Keypad5,   Key_Keypad6,        Key_KeypadAdd,      ___,
-                            ___, Key_Keypad1, Key_Keypad2,   Key_Keypad3,        Key_Equals,         ___,
-    ___,                    ___, Key_Keypad0, Key_KeypadDot, Key_KeypadMultiply, Key_KeypadDivide,   Key_Enter,
+    M(MACRO_VERSION_INFO),  ___, Key_7, Key_8,      Key_9,              Key_KeypadSubtract, ___,
+    ___,                    ___, Key_4, Key_5,      Key_6,              Key_KeypadAdd,      ___,
+                            ___, Key_1, Key_2,      Key_3,              Key_Equals,         ___,
+    ___,                    ___, Key_0, Key_Period, Key_KeypadMultiply, Key_KeypadDivide,   Key_Enter,
     ___, ___, ___, ___,
     ___),
 
@@ -48,14 +48,14 @@ KEYMAPS(
     ___, Key_mouseScrollL, Key_mouseWarpNW, Key_mouseUp,      Key_mouseWarpNE, Key_mouseScrollUp, Key_mouseBtnL,
     ___, Key_mouseScrollR, Key_mouseL,      Key_mouseDn,      Key_mouseR,      Key_mouseScrollDn,
     ___, XXX,              Key_mouseWarpSW, Key_mouseWarpEnd, Key_mouseWarpSE, Key_mouseBtnM,     Key_mouseBtnR,
-    OSM(LeftShift), Key_mouseBtnL, OSM(LeftGui), OSM(LeftControl),
+    Key_LeftShift, Key_mouseBtnL, Key_LeftGui, Key_LeftControl,
     ___,
 
     M(MACRO_ANY), Key_F6,        Key_F7,                   Key_F8,                  Key_F9,          Key_F10,          Key_F11,
-    Key_Enter,    ___,           Key_LeftCurlyBracket,     Key_RightCurlyBracket,   Key_LeftBracket, Key_RightBracket, Key_F12,
-                  Key_LeftArrow, Key_DownArrow,            Key_UpArrow,             Key_RightArrow,  ___,              ___,
-    ___,          Consumer_Mute, Consumer_VolumeDecrement, Consumer_VolumeIncrement, ___,             Key_Backslash,    Key_Pipe,
-    OSM(Hyper), OSM(LeftAlt), Key_Enter, OSM(RightShift),
+    ___,          ___,           Key_LeftCurlyBracket, Key_RightCurlyBracket, Key_LeftBracket, Key_RightBracket, Key_F12,
+                  Key_LeftArrow, Key_DownArrow,        Key_UpArrow,           Key_RightArrow,  ___,              ___,
+    ___,          ___,           ___,                  ___,                   ___,             Key_Backslash,    Key_Pipe,
+    Key_HyperP, Key_LeftAlt, Key_Enter, Key_RightShift,
     ___),
 
 
@@ -80,14 +80,14 @@ KEYMAPS(
     ___, ___, ___, ___, ___, ___, ___,
     ___, ___, ___, ___, ___, ___,
     ___, ___, ___, ___, ___, ___, ___,
-    ___, ___, ___, LockLayer(FUNCTION),
+    ___, ___, ___, ___,
     Key_Mirror,
 
     ___,       ___, ___, ___, ___, ___, ___,
     Key_Enter, ___, ___, ___, ___, ___, ___,
                ___, ___, ___, ___, ___, ___,
     ___,       ___, ___, ___, ___, ___, ___,
-    LockLayer(FUNCTION), ___, ___, ___,
+    ___, ___, ___, ___,
     Key_Mirror),
 
 
@@ -144,15 +144,16 @@ static void anyKeyMacro(uint8_t keyState) {
  *
  */
 static void toggleMirror() {
-  if (Layer.isOn(MIRROR)) {
-    Layer.off(MIRROR);
-    StalkerEffect.breathe_on = false;
-    kaleidoscope::LEDControl::set_mode(previous_led_mode);
+  if (Layer.isActive(MIRROR)) {
+    Layer.deactivate(MIRROR);
+    StalkerEffect.inactive_color = CRGB(0, 0, 0);
+    kaleidoscope::plugin::LEDControl::set_mode(previous_led_mode);
     ToughLove.active = previous_tough_love_status;
   } else {
-    Layer.on(MIRROR);
-    previous_led_mode = kaleidoscope::LEDControl::get_mode_index();
-    StalkerEffect.breathe_on = true;
+    Layer.activate(MIRROR);
+    previous_led_mode = kaleidoscope::plugin::LEDControl::get_mode_index();
+    StalkerEffect.inactive_color = CRGB(130, 0, 120);
+    // StalkerEffect.breathe_on = true;
     StalkerEffect.activate();
     previous_tough_love_status = ToughLove.active;
     ToughLove.active = false;
@@ -184,33 +185,21 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
   return MACRO_NONE;
 }
 
-static const kaleidoscope::MagicCombo::combo_t magic_combos[] PROGMEM = {
-  {
-    R3C6,
-    R3C9
-  },
-  // {
-  //   R0C7,
-  //   R0C8
-  // },
-  {0, 0}
-};
+static kaleidoscope::plugin::LEDSolidColor solidRed(160, 0, 0);
+static kaleidoscope::plugin::LEDSolidColor solidOrange(140, 70, 0);
+static kaleidoscope::plugin::LEDSolidColor solidYellow(130, 100, 0);
+static kaleidoscope::plugin::LEDSolidColor solidGreen(0, 160, 0);
+static kaleidoscope::plugin::LEDSolidColor solidBlue(0, 70, 130);
+static kaleidoscope::plugin::LEDSolidColor solidIndigo(0, 0, 170);
+static kaleidoscope::plugin::LEDSolidColor solidViolet(130, 0, 120);
 
-static kaleidoscope::LEDSolidColor solidRed(160, 0, 0);
-static kaleidoscope::LEDSolidColor solidOrange(140, 70, 0);
-static kaleidoscope::LEDSolidColor solidYellow(130, 100, 0);
-static kaleidoscope::LEDSolidColor solidGreen(0, 160, 0);
-static kaleidoscope::LEDSolidColor solidBlue(0, 70, 130);
-static kaleidoscope::LEDSolidColor solidIndigo(0, 0, 170);
-static kaleidoscope::LEDSolidColor solidViolet(130, 0, 120);
-
-void magicComboActions(uint8_t combo_index, uint32_t left_hand, uint32_t right_hand) {
+void magicComboActions(uint8_t combo_index) {
   switch (combo_index) {
   case 0:
-    if (Layer.isOn(EMPTY)) {
-      Layer.off(EMPTY);
+    if (Layer.isActive(EMPTY)) {
+      Layer.deactivate(EMPTY);
     } else {
-      Layer.on(EMPTY);
+      Layer.activate(EMPTY);
     }
     break;
   case 1:
@@ -219,15 +208,20 @@ void magicComboActions(uint8_t combo_index, uint32_t left_hand, uint32_t right_h
   }
 }
 
+USE_MAGIC_COMBOS({
+  .action = magicComboActions,
+  .keys = {R3C6, R3C9}
+});
+
 /** toggleLedsOnSuspendResume toggles the LEDs off when the host goes to sleep,
  * and turns them back on when it wakes up.
  */
 void toggleLedsOnSuspendResume(kaleidoscope::HostPowerManagement::Event event) {
   switch (event) {
   case kaleidoscope::HostPowerManagement::Suspend:
-    LEDControl.paused = true;
     LEDControl.set_all_leds_to({0, 0, 0});
     LEDControl.syncLeds();
+    LEDControl.paused = true;
     break;
   case kaleidoscope::HostPowerManagement::Resume:
     LEDControl.paused = false;
@@ -246,16 +240,16 @@ void hostPowerManagementEventHandler(kaleidoscope::HostPowerManagement::Event ev
   toggleLedsOnSuspendResume(event);
 }
 
-// static kaleidoscope::HelpMeDebug hmd1(1);
-// static kaleidoscope::HelpMeDebug hmd2(2);
+static kaleidoscope::HelpMeDebug hmd1(1);
+static kaleidoscope::HelpMeDebug hmd2(2);
 
 KALEIDOSCOPE_INIT_PLUGINS(
   // Order Dependent Plugins
-  Qukeys,
-  ToughLove,
+  // Qukeys,
   // hmd1,
-  Mirror,
+  ToughLove,
   // hmd2,
+  Mirror,
   OneShot,
 
   // LED Plugins
@@ -263,20 +257,28 @@ KALEIDOSCOPE_INIT_PLUGINS(
   BootGreetingEffect,
   LEDControl,
   LEDOff,
+  IdleLEDs,
   LEDBreatheEffect,
   StalkerEffect,
   LEDRainbowEffect,
   LEDRainbowWaveEffect,
   solidRed, solidOrange, solidYellow, solidGreen, solidBlue, solidIndigo, solidViolet,
-  NumPad,
+  WavepoolEffect,
 
   // Other Plugins
   EscapeOneShot,
+  // EEPROMKeymap,
+  // EEPROMSettings,
+  // Focus,
+  // FocusSettingsCommand,
+  // FocusEEPROMCommand,
   HostPowerManagement,
   Hyper,
   Macros,
   MagicCombo,
-  MouseKeys
+  MouseKeys,
+  NumPad,
+  USBQuirks
 );
 
 namespace paulshir {
@@ -284,11 +286,11 @@ void setup() {
   Serial.begin(9600);
   Kaleidoscope.setup();
 
-  QUKEYS(
-    kaleidoscope::Qukey(MIRROR, 3, 7, Key_LeftControl),
-    kaleidoscope::Qukey(MIRROR, 3, 8, Key_RightControl),
-    kaleidoscope::Qukey(QWERTY, 0, 0, Key_Hyper)
-  )
+  // QUKEYS(
+  //   kaleidoscope::Qukey(MIRROR, 3, 7, Key_LeftControl),
+  //   kaleidoscope::Qukey(MIRROR, 3, 8, Key_RightControl),
+  //   kaleidoscope::Qukey(QWERTY, 0, 0, Key_Hyper)
+  // )
 
   // LED Effect Settings
   ActiveModColorEffect.highlight_color = CRGB(0, 255, 255);
@@ -300,12 +302,10 @@ void setup() {
   LEDRainbowWaveEffect.brightness(150);
   NumPad.numPadLayer = NUMPAD;
   StalkerEffect.variant = STALKER(Haunt, (CRGB(255, 100, 225)));
-  StalkerEffect.breath_hue = 205;
 
-  MagicCombo.magic_combos = magic_combos;
-  MouseKeys.speed = 2;
-  MouseKeys.accelSpeed = 5;
-  MouseKeys.accelDelay = 20;
+  MouseKeys.speed = 20;
+  MouseKeys.accelSpeed = 40;
+  MouseKeys.accelDelay = 100;
 
   LEDOff.activate();
 }

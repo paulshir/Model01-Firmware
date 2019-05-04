@@ -17,24 +17,29 @@
 #include "plugins/ToughLove.h"
 
 #include <Kaleidoscope.h>
+// #include <Kaleidoscope-EEPROM-Settings.h>
+// #include <Kaleidoscope-EEPROM-Keymap.h>
 #include <Kaleidoscope-Escape-OneShot.h>
+// #include <Kaleidoscope-FocusSerial.h>
 #include <Kaleidoscope-HostPowerManagement.h>
 #include <Kaleidoscope-MouseKeys.h>
 #include <Kaleidoscope-Macros.h>
 #include <Kaleidoscope-MagicCombo.h>
 #include <Kaleidoscope-NumPad.h>
 #include <Kaleidoscope-OneShot.h>
-#include <Kaleidoscope-Qukeys.h>
+// #include <Kaleidoscope-Qukeys.h>
 #include <Kaleidoscope-Ranges.h>
+#include <Kaleidoscope-USB-Quirks.h>
 
 #include <Kaleidoscope-LEDControl.h>
+#include <Kaleidoscope-IdleLEDs.h>
 #include <Kaleidoscope-LED-ActiveModColor.h>
 #include <Kaleidoscope-LED-Stalker.h>
+#include <Kaleidoscope-LED-Wavepool.h>
 #include <Kaleidoscope-LEDEffect-BootGreeting.h>
 #include <Kaleidoscope-LEDEffect-SolidColor.h>
 #include <Kaleidoscope-LEDEffect-Breathe.h>
 #include <Kaleidoscope-LEDEffect-Rainbow.h>
-#include <LED-Off.h>
 
 // Macros
 enum {

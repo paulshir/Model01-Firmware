@@ -6,7 +6,7 @@
  */
 #include "Hyper.h"
 
-#define Key_HyperSend LCTRL(LSHIFT(LALT(Key_RightGui)))
+#define Key_HyperSend LCTRL(LSHIFT(LALT(LGUI(Key_RightGui))))
 
 namespace kaleidoscope {
 

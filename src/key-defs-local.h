@@ -23,7 +23,6 @@ enum : uint16_t {
 }
 
 #define Key_Prog      Key_NoKey
-#define Key_Hyper     Key_RightGui
-// #define Key_Hyper     LSHIFT(LALT(LGUI(Key_LeftControl)))
+#define Key_HyperP    Key_RightGui
 #define MacOS_Sleep   LSHIFT(LCTRL(Key_Power))
 #define Key_Mirror    (Key) {.raw = paulshir::ranges::MIRROR}

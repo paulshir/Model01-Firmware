@@ -6,12 +6,6 @@
  */
 #include "ToughLove.h"
 
-/**
- * Initial naive implementation.
- * Always one loop behind
- * Will not handle lifting of mirror key before lifting of mirrored key.
- * Also pressing multiple mirror keys will cause issue.
- */
 namespace kaleidoscope {
 
 bool ToughLove::active = true;
@@ -27,6 +21,10 @@ EventHandlerResult ToughLove::onKeyswitchEvent(Key &mappedKey, byte row, byte co
   }
 
   if (row > ROWS || col > COLS) {
+    return EventHandlerResult::OK;
+  }
+
+  if (mappedKey.flags & SYNTHETIC) {
     return EventHandlerResult::OK;
   }
 

@@ -11,7 +11,7 @@
 namespace kaleidoscope {
 class HelpMeDebug : public kaleidoscope::Plugin {
  public:
-  HelpMeDebug(uint8_t value);
+  explicit HelpMeDebug(uint8_t value);
 
   EventHandlerResult onKeyswitchEvent(Key &mappedKey, byte row, byte col, uint8_t keyState);
 

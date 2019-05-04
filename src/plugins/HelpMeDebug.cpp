@@ -16,7 +16,7 @@ namespace kaleidoscope {
 
 HelpMeDebug::HelpMeDebug(uint8_t value) {
   this->value_ = value;
-};
+}
 
 EventHandlerResult HelpMeDebug::onKeyswitchEvent(Key &mappedKey, byte row, byte col, uint8_t keyState) {
   if (keyToggledOn(keyState) || keyToggledOff(keyState)) {

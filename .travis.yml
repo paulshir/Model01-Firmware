@@ -17,7 +17,7 @@ deploy:
   api_key:
     secure: pn57sHpnvUxuB8fivJkPUUY1no6R7+MUUDcXF3zHfOShwwsRYB4QN2Um2LfjuoRw/607L3heJsP0S+HT7IWORxp1Tg+OuWQbAWZxxSP9yKTck3Z9sEy6X/NfQ+TxYN5lPrlvh9z+CdFn86Tc740cRZ2ekJgbzyf9aEpqe+Sa995qLVfUYSC1fH5+hz8AeIbsS0sncAdCOoxjwFEk9ET9HK4BWfIfdZX172jdgqe2ddcJCQqpSRYzBNZ9OGXhnE6N0f4hkzOY1SdfaCtjcpHZq7J1o8I6SJtzWR9oskYdyQfCuxMOn1xH3nsMWavNda21IQ0uxE8zaL5lxjCOB/dpGljZUVZIjQ2EhyiYicOwF9NhikmYjR/I+gsiybN0AG5D5N7SSTJ4jbQVjbnnpJRImXB2ZlBDuEE8eql3rvpv0fXDPBV2OqJiYpuTRkaKeV3Vxbv/QqI1LxO8HsT/cPgPk/kWSOjyJrvV78NFPlB6Vbodneqt3sxnxGM01XcC12mIWl4cUWSzCSLqTOpu6Ya55onus3MezcLGmjatTA8vjfbuntuITWkFNWsQS/css5MtsOO1RvwwpdljapCNIPUUY7pc1MO+x/aQc/AZc1ro+FiMacqDl+dNyHw7UwUdm7C903JS6Uyqyjbgnmnctnr2n62w9RgtlVH7JzDXJ31FklY=
   file_glob: true
-  file: "output/Model01-Firmware/Model01-Firmware-1-*"
+  file: "output/Model01-Firmware-1-*"
   skip_cleanup: true
   on:
     repo: paulshir/Model01-Firmware

@@ -5,7 +5,8 @@ os:
 install:
 - git clone --depth 1 --recurse-submodules https://github.com/paulshir/Kaleidoscope-Bundle-Keyboardio hardware/keyboardio
 script:
-- make travis-test BOARD_HARDWARE_PATH=$(pwd)/hardware
+- mkdir $(pwd)/output
+- make travis-test BOARD_HARDWARE_PATH=$(pwd)/hardware OUTPUT_PATH=$(pwd)/output
 notifications:
   email:
     on_success: change

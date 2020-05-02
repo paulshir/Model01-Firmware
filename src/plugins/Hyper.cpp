@@ -9,17 +9,19 @@
 #define Key_HyperSend LCTRL(LSHIFT(LALT(LGUI(Key_RightGui))))
 
 namespace kaleidoscope {
+namespace plugin {
 
-EventHandlerResult Hyper::onKeyswitchEvent(Key &mappedKey, byte row, byte col, uint8_t keyState) {
-  if (mappedKey.raw != Key_RightGui.raw) {
+EventHandlerResult Hyper::onKeyswitchEvent(Key &mappedKey, KeyAddr keyAddr, uint8_t keyState) {
+  if (mappedKey.getRaw() != Key_RightGui.getRaw()) {
     return EventHandlerResult::OK;
   }
 
-  handleKeyswitchEvent(Key_HyperSend, row, col, keyState | INJECTED);
+  handleKeyswitchEvent(Key_HyperSend, keyAddr, keyState | INJECTED);
 
   return EventHandlerResult::EVENT_CONSUMED;
 }
 
+}  // namespace plugin
 }  // namespace kaleidoscope
 
-kaleidoscope::Hyper Hyper;
+kaleidoscope::plugin::Hyper Hyper;

@@ -7,6 +7,7 @@
 #include "ToughLove.h"
 
 namespace kaleidoscope {
+namespace plugin {
 
 bool ToughLove::active = true;
 bool ToughLove::shift_block_active = true;
@@ -15,20 +16,20 @@ bool ToughLove::block_left_ = false;
 bool ToughLove::block_right_ = false;
 paulshir::HandStateStore ToughLove::hands_;
 
-EventHandlerResult ToughLove::onKeyswitchEvent(Key &mappedKey, byte row, byte col, uint8_t keyState) {
+EventHandlerResult ToughLove::onKeyswitchEvent(Key &mappedKey, KeyAddr keyAddr, uint8_t keyState) {
   if (!active) {
     return EventHandlerResult::OK;
   }
 
-  if (row > ROWS || col > COLS) {
+  if (keyAddr.row() > Kaleidoscope.device().matrix_rows || keyAddr.col() > Kaleidoscope.device().matrix_rows) {
     return EventHandlerResult::OK;
   }
 
-  if (mappedKey.flags & SYNTHETIC) {
+  if (mappedKey.getFlags() & SYNTHETIC) {
     return EventHandlerResult::OK;
   }
 
-  if ((row == 0 && col == 7 && shift_block_active) || (row == 3 && col == 6 && function_block_active)) {
+  if ((keyAddr.row() == 0 && keyAddr.col() == 7 && shift_block_active) || (keyAddr.row() == 3 && keyAddr.col() == 6 && function_block_active)) {
     if (keyToggledOn(keyState)) {
       block_left_ = true;
     } else if (keyToggledOff(keyState)) {
@@ -38,7 +39,7 @@ EventHandlerResult ToughLove::onKeyswitchEvent(Key &mappedKey, byte row, byte co
     return EventHandlerResult::OK;
   }
 
-  if ((row == 0 && col == 8 && shift_block_active) || (row == 3 && col == 9 && function_block_active)) {
+  if ((keyAddr.row() == 0 && keyAddr.col() == 8 && shift_block_active) || (keyAddr.row() == 3 && keyAddr.col() == 9 && function_block_active)) {
     if (keyToggledOn(keyState)) {
       block_right_ = true;
     } else if (keyToggledOff(keyState)) {
@@ -48,16 +49,16 @@ EventHandlerResult ToughLove::onKeyswitchEvent(Key &mappedKey, byte row, byte co
     return EventHandlerResult::OK;
   }
 
-  if (row == 3 && (col == 6 || col == 9)) {
+  if (keyAddr.row() == 3 && (keyAddr.col() == 6 || keyAddr.col() == 9)) {
     return EventHandlerResult::OK;
   }
 
-  if ((block_left_ && col < COLS_SPLIT - 1) || (block_right_ && col >= COLS_SPLIT + 1)) {
+  if ((block_left_ && keyAddr.col() < COLS_SPLIT - 1) || (block_right_ && keyAddr.col() >= COLS_SPLIT + 1)) {
     if (keyToggledOn(keyState)) {
-      hands_.setState(row, col);
+      hands_.setState(keyAddr.row(), keyAddr.col());
     } else if (keyToggledOff(keyState)) {
-      if (hands_.getState(row, col)) {
-        hands_.unsetState(row, col);
+      if (hands_.getState(keyAddr.row(), keyAddr.col())) {
+        hands_.unsetState(keyAddr.row(), keyAddr.col());
       } else {
         return EventHandlerResult::OK;
       }
@@ -66,9 +67,9 @@ EventHandlerResult ToughLove::onKeyswitchEvent(Key &mappedKey, byte row, byte co
     return EventHandlerResult::EVENT_CONSUMED;
   }
 
-  if (hands_.getState(row, col)) {
+  if (hands_.getState(keyAddr.row(), keyAddr.col())) {
     if (keyToggledOff(keyState)) {
-      hands_.unsetState(row, col);
+      hands_.unsetState(keyAddr.row(), keyAddr.col());
     }
 
     return EventHandlerResult::EVENT_CONSUMED;
@@ -80,6 +81,7 @@ EventHandlerResult ToughLove::onKeyswitchEvent(Key &mappedKey, byte row, byte co
   return EventHandlerResult::OK;
 }
 
+}  // namespace plugin
 }  // namespace kaleidoscope
 
-kaleidoscope::ToughLove ToughLove;
+kaleidoscope::plugin::ToughLove ToughLove;

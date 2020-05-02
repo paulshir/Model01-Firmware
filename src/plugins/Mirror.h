@@ -11,17 +11,19 @@
 #include <Kaleidoscope.h>
 
 namespace kaleidoscope {
+namespace plugin {
 class Mirror : public kaleidoscope::Plugin {
  public:
   Mirror(void) {}
 
-  EventHandlerResult onKeyswitchEvent(Key &mappedKey, byte row, byte col, uint8_t keyState);
+  EventHandlerResult onKeyswitchEvent(Key &mappedKey, KeyAddr keyAddr, uint8_t keyState);
 
  private:
   static uint8_t step_;
   static paulshir::HandStateStore hands_;
 };
 
+}  // namespace plugin
 }  // namespace kaleidoscope
 
-extern kaleidoscope::Mirror Mirror;
+extern kaleidoscope::plugin::Mirror Mirror;

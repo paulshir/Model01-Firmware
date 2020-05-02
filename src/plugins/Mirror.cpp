@@ -7,6 +7,7 @@
 #include "Mirror.h"
 
 namespace kaleidoscope {
+namespace plugin {
 
 enum {
   MIRROR_OFF = 0,
@@ -18,12 +19,12 @@ uint8_t Mirror::step_ = MIRROR_OFF;
 paulshir::HandStateStore Mirror::hands_;
 
 static byte mirroredCol(byte col) {
-  return COLS - col - 1;
+  return Kaleidoscope.device().matrix_columns - col - 1;
 }
 
-EventHandlerResult Mirror::onKeyswitchEvent(Key &mappedKey, byte row, byte col, uint8_t keyState) {
+EventHandlerResult Mirror::onKeyswitchEvent(Key &mappedKey, KeyAddr keyAddr, uint8_t keyState) {
   // Check if the mirror key is pressed
-  if (mappedKey.raw == Key_Mirror.raw) {
+  if (mappedKey.getRaw() == Key_Mirror.getRaw()) {
     if (keyIsPressed(keyState)) {
       step_ = MIRROR_ACTIVE;
     } else if (keyToggledOff(keyState)) {
@@ -38,15 +39,15 @@ EventHandlerResult Mirror::onKeyswitchEvent(Key &mappedKey, byte row, byte col, 
   }
 
   // Pass through if not active, injected, or rows/cols are out of bounds
-  if (step_ == MIRROR_OFF || row >= ROWS || col >= COLS || keyState & INJECTED) {
+  if (step_ == MIRROR_OFF || keyAddr.row() >= Kaleidoscope.device().matrix_rows || keyAddr.col() >= Kaleidoscope.device().matrix_columns || keyState & INJECTED) {
     return EventHandlerResult::OK;
   }
 
   // Update the keymap state
   if (step_ == MIRROR_ACTIVE && keyToggledOn(keyState)) {
-    hands_.setState(row, col);
+    hands_.setState(keyAddr.row(), keyAddr.col());
   } else if (keyToggledOff(keyState)) {
-    hands_.unsetState(row, col);
+    hands_.unsetState(keyAddr.row(), keyAddr.col());
   }
 
   if (step_ == MIRROR_CLEANUP && hands_.isClear()) {
@@ -54,17 +55,19 @@ EventHandlerResult Mirror::onKeyswitchEvent(Key &mappedKey, byte row, byte col, 
   }
 
   // If the col is not registered don't mirror it.
-  if (keyIsPressed(keyState) && !(hands_.getState(row, col))) {
+  if (keyIsPressed(keyState) && !(hands_.getState(keyAddr.row(), keyAddr.col()))) {
     return EventHandlerResult::OK;
   }
 
-  byte mir_col = mirroredCol(col);
-  Key newKey = Layer.lookup(row, mir_col);
-  handleKeyswitchEvent(newKey, row, mir_col, keyState | INJECTED);
+  byte mir_col = mirroredCol(keyAddr.col());
+  keyAddr.setCol(mir_col);
+  Key newKey = Layer.lookup(keyAddr);
+  handleKeyswitchEvent(newKey, keyAddr, keyState | INJECTED);
 
   return EventHandlerResult::EVENT_CONSUMED;
 }
 
+}  // namespace plugin
 }  // namespace kaleidoscope
 
-kaleidoscope::Mirror Mirror;
+kaleidoscope::plugin::Mirror Mirror;

@@ -11,6 +11,7 @@
 #include <Kaleidoscope.h>
 
 namespace kaleidoscope {
+namespace plugin {
 class ToughLove : public kaleidoscope::Plugin {
  public:
   ToughLove(void) {}
@@ -18,7 +19,7 @@ class ToughLove : public kaleidoscope::Plugin {
   static bool shift_block_active;
   static bool function_block_active;
 
-  EventHandlerResult onKeyswitchEvent(Key &mappedKey, byte row, byte col, uint8_t keyState);
+  EventHandlerResult onKeyswitchEvent(Key &mappedKey, KeyAddr keyAddr, uint8_t keyState);
 
  private:
   static bool block_left_;
@@ -26,6 +27,7 @@ class ToughLove : public kaleidoscope::Plugin {
   static paulshir::HandStateStore hands_;
 };
 
+}  // namespace plugin
 }  // namespace kaleidoscope
 
-extern kaleidoscope::ToughLove ToughLove;
+extern kaleidoscope::plugin::ToughLove ToughLove;

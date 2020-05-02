@@ -13,21 +13,22 @@
  * Also pressing multiple mirror keys will cause issue.
  */
 namespace kaleidoscope {
+namespace plugin {
 
 HelpMeDebug::HelpMeDebug(uint8_t value) {
   this->value_ = value;
 }
 
-EventHandlerResult HelpMeDebug::onKeyswitchEvent(Key &mappedKey, byte row, byte col, uint8_t keyState) {
+EventHandlerResult HelpMeDebug::onKeyswitchEvent(Key &mappedKey, KeyAddr keyAddr, uint8_t keyState) {
   if (keyToggledOn(keyState) || keyToggledOff(keyState)) {
     Serial.print("HMD");
     Serial.print(value_);
     Serial.print(" key: ");
-    Serial.print(mappedKey.raw);
+    Serial.print(mappedKey.getRaw());
     Serial.print(" row: ");
-    Serial.print(row);
+    Serial.print(keyAddr.row());
     Serial.print(" col: ");
-    Serial.print(col);
+    Serial.print(keyAddr.col());
     Serial.print(" state: ");
     Serial.println(keyState);
   }
@@ -35,4 +36,5 @@ EventHandlerResult HelpMeDebug::onKeyswitchEvent(Key &mappedKey, byte row, byte 
   return EventHandlerResult::OK;
 }
 
+}  // namespace plugin
 }  // namespace kaleidoscope

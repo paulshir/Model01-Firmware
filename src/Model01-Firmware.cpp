@@ -129,11 +129,12 @@ static void versionInfoMacro(uint8_t keyState) {
  */
 static void anyKeyMacro(uint8_t keyState) {
   static Key lastKey;
+  bool toggledOn = false;
   if (keyToggledOn(keyState))
-    lastKey.keyCode = Key_A.keyCode + (uint8_t)(millis() % 36);
+    lastKey.setKeyCode(Key_A.getKeyCode() + (uint8_t)(millis() % 36));
 
   if (keyIsPressed(keyState))
-    kaleidoscope::hid::pressKey(lastKey);
+    Kaleidoscope.hid().keyboard().pressKey(lastKey, toggledOn);
 }
 
 /** toggleMirror is used to turn on the mirror layer
@@ -221,10 +222,10 @@ void toggleLedsOnSuspendResume(kaleidoscope::HostPowerManagement::Event event) {
   case kaleidoscope::HostPowerManagement::Suspend:
     LEDControl.set_all_leds_to({0, 0, 0});
     LEDControl.syncLeds();
-    LEDControl.paused = true;
+    LEDControl.disable();
     break;
   case kaleidoscope::HostPowerManagement::Resume:
-    LEDControl.paused = false;
+    LEDControl.enable();
     LEDControl.refreshAll();
     break;
   case kaleidoscope::HostPowerManagement::Sleep:
@@ -240,8 +241,10 @@ void hostPowerManagementEventHandler(kaleidoscope::HostPowerManagement::Event ev
   toggleLedsOnSuspendResume(event);
 }
 
-static kaleidoscope::HelpMeDebug hmd1(1);
-static kaleidoscope::HelpMeDebug hmd2(2);
+static kaleidoscope::plugin::HelpMeDebug hmd1(1);
+static kaleidoscope::plugin::HelpMeDebug hmd2(2);
+
+static kaleidoscope::plugin::BootGreetingEffect bootGreeting(KeyAddr(0, 0));
 
 KALEIDOSCOPE_INIT_PLUGINS(
   // Order Dependent Plugins
@@ -254,7 +257,7 @@ KALEIDOSCOPE_INIT_PLUGINS(
 
   // LED Plugins
   ActiveModColorEffect,
-  BootGreetingEffect,
+  bootGreeting,
   LEDControl,
   LEDOff,
   IdleLEDs,
@@ -295,8 +298,6 @@ void setup() {
   // LED Effect Settings
   ActiveModColorEffect.highlight_color = CRGB(0, 255, 255);
   ActiveModColorEffect.sticky_color = CRGB(0, 255, 150);
-  BootGreetingEffect.key_col = 0;
-  BootGreetingEffect.key_row = 0;
   LEDBreatheEffect.hue = 50;
   LEDRainbowEffect.brightness(150);
   LEDRainbowWaveEffect.brightness(150);

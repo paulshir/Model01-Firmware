@@ -9,14 +9,16 @@
 #include <Kaleidoscope.h>
 
 namespace kaleidoscope {
+namespace plugin {
 class HelpMeDebug : public kaleidoscope::Plugin {
  public:
   explicit HelpMeDebug(uint8_t value);
 
-  EventHandlerResult onKeyswitchEvent(Key &mappedKey, byte row, byte col, uint8_t keyState);
+  EventHandlerResult onKeyswitchEvent(Key &mappedKey, KeyAddr keyAddr, uint8_t keyState);
 
  private:
   uint8_t value_;
 };
 
+}  // namespace plugin
 }  // namespace kaleidoscope

@@ -9,13 +9,15 @@
 #include <Kaleidoscope.h>
 
 namespace kaleidoscope {
+namespace plugin {
 class Hyper : public kaleidoscope::Plugin {
  public:
   Hyper(void) {}
 
-  EventHandlerResult onKeyswitchEvent(Key &mappedKey, byte row, byte col, uint8_t keyState);
+  EventHandlerResult onKeyswitchEvent(Key &mappedKey, KeyAddr keyAddr, uint8_t keyState);
 };
 
+}  // namespace plugin
 }  // namespace kaleidoscope
 
-extern kaleidoscope::Hyper Hyper;
+extern kaleidoscope::plugin::Hyper Hyper;

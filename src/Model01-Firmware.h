@@ -14,7 +14,7 @@
 #include "plugins/HelpMeDebug.h"
 #include "plugins/Hyper.h"
 #include "plugins/Mirror.h"
-#include "plugins/ToughLove.h"
+#include "plugins/Volley.h"
 
 #include <Kaleidoscope.h>
 // #include <Kaleidoscope-EEPROM-Settings.h>
@@ -47,17 +47,20 @@ enum {
   MACRO_ANY,
   MACRO_CLEAR_ONESHOT,
   MACRO_TOGGLE_MIRROR,
-  MACRO_TOGGLE_TL_SHIFT,
-  MACRO_TOGGLE_TL_FUNCTION
+  MACRO_TOGGLE_VL_SHIFT,
+  MACRO_TOGGLE_VL_FUNCTION,
+  MACRO_TOGGLE_VL_TRIGGER_BLOCK,
+  MACRO_TOGGLE_ONESHOT,
 };
 
 // Layers
 enum {
   QWERTY,
   NUMPAD,
+  ONESHOT,
   FUNCTION,
   MEDIA,
-  MIRROR,
+  // MIRROR,
   EMPTY
 };
 

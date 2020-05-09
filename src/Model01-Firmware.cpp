@@ -20,28 +20,42 @@ KEYMAPS(
     ShiftToLayer(FUNCTION),
 
     Key_RightBracket, Key_6, Key_7, Key_8,     Key_9,      Key_0,         LockLayer(NUMPAD),
-    XXX,              Key_Y, Key_U, Key_I,     Key_O,      Key_P,         Key_Equals,
+    ___,              Key_Y, Key_U, Key_I,     Key_O,      Key_P,         Key_Equals,
                       Key_H, Key_J, Key_K,     Key_L,      Key_Semicolon, Key_Quote,
-    XXX,              Key_N, Key_M, Key_Comma, Key_Period, Key_Slash,     Key_Minus,
+    ___,              Key_N, Key_M, Key_Comma, Key_Period, Key_Slash,     Key_Minus,
     Key_HyperP, Key_LeftAlt, Key_Spacebar, Key_RightShift,
     ShiftToLayer(FUNCTION)),
 
 
   [NUMPAD] =  KEYMAP_STACKED(
-    ___, ___, ___, ___, ___, ___, ___,
+    ___, ___, ___, ___, ___, ___, M(MACRO_TOGGLE_VL_TRIGGER_BLOCK),
     ___, ___, ___, ___, ___, ___, ___,
     ___, ___, ___, ___, ___, ___,
     ___, ___, ___, ___, ___, ___, ___,
     ___, ___, ___, ___,
     ___,
 
-    M(MACRO_VERSION_INFO),  ___, Key_7, Key_8,      Key_9,              Key_KeypadSubtract, ___,
-    ___,                    ___, Key_4, Key_5,      Key_6,              Key_KeypadAdd,      ___,
-                            ___, Key_1, Key_2,      Key_3,              Key_Equals,         ___,
-    ___,                    ___, Key_0, Key_Period, Key_KeypadMultiply, Key_KeypadDivide,   Key_Enter,
+    M(MACRO_VERSION_INFO),       ___, Key_7, Key_8,      Key_9,              Key_KeypadSubtract, ___,
+    M(MACRO_TOGGLE_VL_SHIFT),    ___, Key_4, Key_5,      Key_6,              Key_KeypadAdd,      ___,
+                                 ___, Key_1, Key_2,      Key_3,              Key_Equals,         ___,
+    M(MACRO_TOGGLE_VL_FUNCTION), ___, Key_0, Key_Period, Key_KeypadMultiply, Key_KeypadDivide,   Key_Enter,
     ___, ___, ___, ___,
     ___),
 
+  [ONESHOT] =  KEYMAP_STACKED(
+    ___, ___, ___, ___, ___, ___, ___,
+    ___, ___, ___, ___, ___, ___, ___,
+    ___, ___, ___, ___, ___, ___,
+    ___, ___, ___, ___, ___, ___, ___,
+    OSM(LShift), ___, OSM(LGui), OSM(LCtrl),
+    ___,
+
+    ___, ___, ___, ___, ___, ___, ___,
+    ___, ___, ___, ___, ___, ___, ___,
+         ___, ___, ___, ___, ___, ___,
+    ___, ___, ___, ___, ___, ___, ___,
+    OSM(HyperP), OSM(LAlt), ___, OSM(RShift),
+    ___),
 
   [FUNCTION] =  KEYMAP_STACKED(
     XXX, Key_F1,           Key_F2,          Key_F3,           Key_F4,          Key_F5,            Key_LEDEffectNext,
@@ -60,36 +74,19 @@ KEYMAPS(
 
 
   [MEDIA] =  KEYMAP_STACKED(
-    XXX, LockLayer(0),               LockLayer(1),             LockLayer(2),             LockLayer(3), LockLayer(4), LockLayer(5),
-    ___, Consumer_ScanPreviousTrack, Consumer_PlaySlashPause,  Consumer_ScanNextTrack,   Key_Home,     Key_PageUp,   Key_Enter,
-    ___, Consumer_Mute,              Consumer_VolumeDecrement, Consumer_VolumeIncrement, Key_End,      Key_PageDown,
-    ___, MacOS_Sleep,                ___,                      ___,                      ___,          ___,          Key_Spacebar,
+    LockLayer(0), LockLayer(1),               LockLayer(2),             LockLayer(3),             LockLayer(4), LockLayer(5), LockLayer(6),
+    ___,          Consumer_ScanPreviousTrack, Consumer_PlaySlashPause,  Consumer_ScanNextTrack,   Key_Home,     Key_PageUp,   Key_Enter,
+    ___,          Consumer_Mute,              Consumer_VolumeDecrement, Consumer_VolumeIncrement, Key_End,      Key_PageDown,
+    ___,          MacOS_Sleep,                ___,                      ___,                      ___,          ___,          Key_Spacebar,
     M(MACRO_TOGGLE_MIRROR), Key_Delete, Key_RightGui, ___,
     ___,
 
-    ___, M(MACRO_TOGGLE_TL_SHIFT), M(MACRO_TOGGLE_TL_FUNCTION), ___,           ___,            ___, ___,
+    ___, M(MACRO_TOGGLE_VL_SHIFT), M(MACRO_TOGGLE_VL_FUNCTION), ___,           ___,            ___, ___,
     ___, ___,                      ___,                         Key_UpArrow,   ___,            ___, ___,
          ___,                      Key_LeftArrow,               Key_DownArrow, Key_RightArrow, ___, ___,
     ___, ___,                      ___,                         ___,           ___,            ___, ___,
-    ___, Key_RightAlt, Key_Enter, M(MACRO_TOGGLE_MIRROR),
+    ___, Key_RightAlt, Key_Enter, M(MACRO_TOGGLE_ONESHOT),
     ___),
-
-
-  [MIRROR] =  KEYMAP_STACKED(
-    ___, ___, ___, ___, ___, ___, ___,
-    ___, ___, ___, ___, ___, ___, ___,
-    ___, ___, ___, ___, ___, ___,
-    ___, ___, ___, ___, ___, ___, ___,
-    ___, ___, ___, ___,
-    Key_Mirror,
-
-    ___,       ___, ___, ___, ___, ___, ___,
-    Key_Enter, ___, ___, ___, ___, ___, ___,
-               ___, ___, ___, ___, ___, ___,
-    ___,       ___, ___, ___, ___, ___, ___,
-    ___, ___, ___, ___,
-    Key_Mirror),
-
 
   [EMPTY] =  KEYMAP_STACKED(
     XXX, XXX, XXX, XXX, XXX, XXX, XXX,
@@ -144,23 +141,71 @@ static void anyKeyMacro(uint8_t keyState) {
  * mode is turned off.
  *
  */
+static kaleidoscope::plugin::Volley volleyMirror(ShiftToLayer(FUNCTION), ShiftToLayer(FUNCTION));
+static kaleidoscope::plugin::Volley volleyOneShot(OSM(LShift), OSM(RShift));
+static bool mirrorActive = false;
+static bool oneShotActive = false;
+static void toggleOneShot();
 static void toggleMirror() {
-  if (Layer.isActive(MIRROR)) {
-    Layer.deactivate(MIRROR);
+  if (oneShotActive) {
+    toggleOneShot();
+  }
+
+
+  if (mirrorActive) {
+    mirrorActive = false;
+    Volley.activate();
+    volleyMirror.deactivate();
     StalkerEffect.inactive_color = CRGB(0, 0, 0);
     kaleidoscope::plugin::LEDControl::set_mode(previous_led_mode);
-    ToughLove.active = previous_tough_love_status;
   } else {
-    Layer.activate(MIRROR);
+    mirrorActive = true;
+    Volley.deactivate();
+    volleyMirror.activate();
     previous_led_mode = kaleidoscope::plugin::LEDControl::get_mode_index();
-    StalkerEffect.inactive_color = CRGB(130, 0, 120);
-    // StalkerEffect.breathe_on = true;
+    StalkerEffect.inactive_color = CRGB(100, 0, 90);
     StalkerEffect.activate();
-    previous_tough_love_status = ToughLove.active;
-    ToughLove.active = false;
   }
 }
 
+static void toggleOneShot() {
+  if (mirrorActive) {
+    toggleMirror();
+  }
+
+  if (oneShotActive) {
+    oneShotActive = false;
+    Volley.activate();
+    volleyOneShot.deactivate();
+    Layer.deactivate(ONESHOT);
+  } else {
+    oneShotActive = true;
+    Volley.deactivate();
+    volleyOneShot.activate();
+    Layer.activate(ONESHOT);
+  }
+
+}
+
+static bool volleyIgnoreKeyAddr(KeyAddr key_addr, KeyAddr trigger_key_addr) {
+  // Skip Function Keys
+  if (key_addr.row() == 3 && (key_addr.col() == 6 || key_addr.col() == 9)) {
+    return true;
+  }
+
+  // Skip Modifiers
+  if (key_addr.row() != 1 && (key_addr.col() == 7 || key_addr.col() == 8)) {
+    return true;
+  }
+
+  return false;
+}
+
+static void onMirrorKeyToggledOn(Key &mapped_key, KeyAddr mir_key_addr) {
+  StalkerEffect.onKeyswitchEvent(mapped_key, mir_key_addr, IS_PRESSED);
+}
+
+static bool volley_blocked_mode = false;
 const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
   switch (macroIndex) {
   case MACRO_VERSION_INFO:
@@ -173,13 +218,24 @@ const macro_t *macroAction(uint8_t macroIndex, uint8_t keyState) {
     if (keyToggledOn(keyState))
       toggleMirror();
     break;
-  case MACRO_TOGGLE_TL_SHIFT:
+  case MACRO_TOGGLE_VL_SHIFT:
     if (keyToggledOn(keyState))
-      ToughLove.shift_block_active = !ToughLove.shift_block_active;
+      Volley.setSecondaryModeBlocked();
     break;
-  case MACRO_TOGGLE_TL_FUNCTION:
+  case MACRO_TOGGLE_VL_FUNCTION:
     if (keyToggledOn(keyState))
-      ToughLove.function_block_active = !ToughLove.function_block_active;
+      Volley.setSecondaryModeShiftToLayer(FUNCTION);
+    break;
+  case MACRO_TOGGLE_VL_TRIGGER_BLOCK:
+    if (keyToggledOn(keyState)) {
+      volley_blocked_mode = !volley_blocked_mode;
+      Volley.blockTriggerUntilDecided(volley_blocked_mode);
+      volleyOneShot.blockTriggerUntilDecided(volley_blocked_mode);
+    }
+    break;
+  case MACRO_TOGGLE_ONESHOT:
+    if (keyToggledOn(keyState))
+      toggleOneShot();
     break;
   }
 
@@ -241,17 +297,21 @@ void hostPowerManagementEventHandler(kaleidoscope::HostPowerManagement::Event ev
   toggleLedsOnSuspendResume(event);
 }
 
-static kaleidoscope::plugin::HelpMeDebug hmd1(1);
-static kaleidoscope::plugin::HelpMeDebug hmd2(2);
+// static kaleidoscope::plugin::HelpMeDebug hmd1(1);
+// static kaleidoscope::plugin::HelpMeDebug hmd2(2);
 
 static kaleidoscope::plugin::BootGreetingEffect bootGreeting(KeyAddr(0, 0));
 
 KALEIDOSCOPE_INIT_PLUGINS(
   // Order Dependent Plugins
   // Qukeys,
+  // FlipFlop,
   // hmd1,
-  ToughLove,
+  Volley,
+  volleyMirror,
+  volleyOneShot,
   // hmd2,
+
   Mirror,
   OneShot,
 
@@ -307,6 +367,16 @@ void setup() {
   MouseKeys.speed = 20;
   MouseKeys.accelSpeed = 40;
   MouseKeys.accelDelay = 100;
+
+  // Volley.setIgnoreKeyAddrFunc(volleyIgnoreKeyAddr);
+  Mirror.setMirroredKeyToggledOnFunc(onMirrorKeyToggledOn);
+  volleyMirror.deactivate();
+  volleyMirror.setSecondaryModePressKey(Key_Mirror);
+  volleyMirror.blockTriggerUntilDecided(true);
+
+  volleyOneShot.deactivate();
+  volleyOneShot.setSecondaryModeShiftToLayer(FUNCTION);
+  volleyOneShot.blockTriggerUntilDecided(true);
 
   LEDOff.activate();
 }

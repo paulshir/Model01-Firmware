@@ -7,8 +7,9 @@
 #pragma once
 
 #include "../key-defs-local.h"
-#include "HandStateStore.h"
 #include <Kaleidoscope.h>
+
+constexpr uint8_t kMirroredCol(KeyAddr key_addr) { return Kaleidoscope.device().matrix_columns - 1 - key_addr.col(); }
 
 namespace kaleidoscope {
 namespace plugin {
@@ -16,11 +17,15 @@ class Mirror : public kaleidoscope::Plugin {
  public:
   Mirror(void) {}
 
-  EventHandlerResult onKeyswitchEvent(Key &mappedKey, KeyAddr keyAddr, uint8_t keyState);
+  typedef void(*MirrorKeyToggledOnFunc)(Key &mapped_key, KeyAddr mir_key_addr);
+  static void setMirroredKeyToggledOnFunc(MirrorKeyToggledOnFunc func);
+  EventHandlerResult onKeyswitchEvent(Key &mapped_key, KeyAddr key_addr, uint8_t key_state);
 
  private:
-  static uint8_t step_;
-  static paulshir::HandStateStore hands_;
+  static bool mirror_key_pressed_;
+  static MirrorKeyToggledOnFunc onMirrorKeyToggledOn;
+  static void defaultOnMirroredKeyToggledOn(Key &mapped_key, KeyAddr mir_keykey_addr);
+
 };
 
 }  // namespace plugin

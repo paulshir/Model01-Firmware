@@ -3,7 +3,7 @@ sudo: false
 os:
 - linux
 install:
-- git clone --depth 1 --recurse-submodules https://github.com/paulshir/Kaleidoscope-Bundle-Keyboardio hardware/keyboardio
+- git clone --depth 1 --recurse-submodules https://github.com/keyboardio/Kaleidoscope-Bundle-Keyboardio hardware/keyboardio
 script:
 - mkdir $(pwd)/output
 - make travis-test BOARD_HARDWARE_PATH=$(pwd)/hardware OUTPUT_PATH=$(pwd)/output
